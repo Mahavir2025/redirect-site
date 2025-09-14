@@ -1,9 +1,306 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta http-equiv="refresh" content="0; URL='https://script.google.com/macros/s/AKfycbyU-E3J3X20MFRAsKyKuCFLkdVX8Qlf6pzgyCX447u7q2sdhyKbF7CEs33Pc4cxlb27CQ/exec'" />
-    <title>Redirecting...</title>
-  </head>
-  <body>
-  </body>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Result — Coming Soon</title>
+
+  <!--
+    Redirect is disabled by default. To enable automatic redirect, set
+    the redirectUrl variable in the script (near the bottom) to a full URL
+    (e.g. "https://example.com/your-page") and reload.
+  -->
+
+  <style>
+    /* Page background */
+    :root{
+      --accent1: #6a11cb;
+      --accent2: #2575fc;
+      --card: rgba(255,255,255,0.08);
+      --glass: rgba(255,255,255,0.06);
+      --text: #f6f9ff;
+      --muted: rgba(246,249,255,0.72);
+      --shadow: 0 10px 30px rgba(2,6,23,0.45);
+      --radius: 18px;
+    }
+    html,body{
+      height:100%;
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(106,17,203,0.18), transparent),
+                  radial-gradient(1000px 500px at 90% 90%, rgba(37,117,252,0.14), transparent),
+                  linear-gradient(180deg, #051029 0%, #081126 100%);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+      box-sizing:border-box;
+    }
+
+    .card{
+      width:100%;
+      max-width:920px;
+      border-radius:var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      box-shadow:var(--shadow);
+      padding:44px;
+      display:grid;
+      grid-template-columns: 1fr 360px;
+      gap:28px;
+      align-items:center;
+      backdrop-filter: blur(8px) saturate(1.1);
+      border: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .left{
+      padding-right:10px;
+    }
+
+    h1{
+      margin:0 0 10px 0;
+      font-size:34px;
+      letter-spacing:-0.02em;
+      line-height:1.02;
+    }
+
+    p.lead{
+      margin:0 0 20px 0;
+      color:var(--muted);
+      font-size:15px;
+    }
+
+    .pill{
+      display:inline-block;
+      padding:6px 12px;
+      border-radius:999px;
+      font-weight:600;
+      font-size:13px;
+      background: linear-gradient(90deg, rgba(106,17,203,0.14), rgba(37,117,252,0.12));
+      color:var(--text);
+      border:1px solid rgba(255,255,255,0.03);
+      margin-bottom:16px;
+    }
+
+    .loader {
+      margin-top:14px;
+      display:flex;
+      gap:8px;
+      align-items:center;
+      user-select:none;
+    }
+    .dot {
+      width:12px;
+      height:12px;
+      border-radius:50%;
+      background:linear-gradient(180deg,var(--accent1),var(--accent2));
+      transform: translateY(0);
+      animation: bounce 1s infinite;
+    }
+    .dot:nth-child(2){ animation-delay: 0.12s; }
+    .dot:nth-child(3){ animation-delay: 0.24s; }
+    @keyframes bounce{
+      0% { transform: translateY(0); opacity:0.9; }
+      50% { transform: translateY(-10px); opacity:1; }
+      100% { transform: translateY(0); opacity:0.9; }
+    }
+
+    /* Right column: info / card */
+    .right {
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:14px;
+      padding:20px;
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      align-items:stretch;
+      justify-content:center;
+    }
+
+    .result-box{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.00));
+      border-radius:12px;
+      padding:18px;
+      border:1px dashed rgba(255,255,255,0.04);
+      text-align:center;
+    }
+
+    .result-title{
+      font-size:14px;
+      color:var(--muted);
+      margin-bottom:8px;
+      letter-spacing:0.02em;
+    }
+    .result-value{
+      font-size:22px;
+      font-weight:700;
+      color:var(--text);
+    }
+
+    .actions{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+      margin-top:6px;
+    }
+
+    .btn{
+      background: linear-gradient(90deg,var(--accent1),var(--accent2));
+      border:none;
+      color:white;
+      padding:12px 16px;
+      border-radius:10px;
+      font-weight:700;
+      cursor:pointer;
+      box-shadow: 0 10px 22px rgba(37,117,252,0.12);
+      transition: transform .16s ease, opacity .12s ease;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+    }
+    .btn:active{ transform: translateY(1px); }
+    .btn[disabled]{
+      opacity:0.5;
+      cursor:not-allowed;
+      box-shadow:none;
+      transform:none;
+      background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      color:var(--muted);
+      border: 1px solid rgba(255,255,255,0.02);
+    }
+
+    .small{
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    /* Footer */
+    .footer{
+      margin-top:14px;
+      font-size:13px;
+      color:rgba(246,249,255,0.6);
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+    }
+
+    /* Responsive */
+    @media (max-width:900px){
+      .card{ grid-template-columns: 1fr; padding:28px; gap:18px; }
+      .right{ order: -1; }
+      h1{ font-size:28px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="card" role="main">
+    <section class="left">
+      <span class="pill">Mahavir Classes · Samarthya Test</span>
+      <h1>Result will be coming soon</h1>
+      <p class="lead">
+        We're finalizing the results now — thank you for your patience. This page will automatically redirect to the result page once it's published.
+      </p>
+
+      <div class="loader" aria-hidden="true">
+        <div class="dot" style="width:14px;height:14px;"></div>
+        <div class="dot" style="width:12px;height:12px;"></div>
+        <div class="dot" style="width:10px;height:10px;"></div>
+      </div>
+
+      <div style="margin-top:18px;">
+        <p class="small">Keep this page bookmarked. If you have the seat number or query, please keep it handy — results will be quick to access when released.</p>
+      </div>
+
+      <div class="footer" style="margin-top:22px;">
+        <span>📅 <strong id="dateNow"></strong></span>
+        <span class="small">Designed with ❤️ by Nyalkaran Technosoft</span>
+      </div>
+    </section>
+
+    <aside class="right" aria-label="Result panel">
+      <div class="result-box" aria-live="polite">
+        <div class="result-title">Status</div>
+        <div class="result-value" id="statusText">Pending — Results not published yet</div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;gap:10px;">
+          <button id="goBtn" class="btn" disabled title="No redirect URL set">Go to result</button>
+          <a id="refreshBtn" class="btn" style="background:transparent;color:var(--text);border:1px solid rgba(255,255,255,0.06);box-shadow:none;padding:10px 14px;">
+            Refresh
+          </a>
+        </div>
+        <div class="small">Automatic redirect: <strong id="autoStatus">disabled</strong></div>
+      </div>
+
+      <div class="small" style="opacity:0.95;">
+        Tip: To enable automatic redirect, open this file and set the
+        <code style="background:rgba(255,255,255,0.02);padding:2px 6px;border-radius:6px;">redirectUrl</code>
+        variable in the script section to your final results URL.
+      </div>
+    </aside>
+  </main>
+
+  <script>
+    // === SET REDIRECT URL HERE ===
+    // For now it's intentionally empty (temporarily null).
+    // When ready, set redirectUrl to the full URL string, e.g.:
+    // const redirectUrl = "https://script.google.com/macros/s/XXXXX/exec";
+    const redirectUrl = "";
+
+    // Optional: time before auto-redirect in milliseconds (only used when redirectUrl is set)
+    const autoRedirectDelay = 1200; // 1.2s
+
+    // UI references
+    const goBtn = document.getElementById('goBtn');
+    const refreshBtn = document.getElementById('refreshBtn');
+    const autoStatus = document.getElementById('autoStatus');
+    const statusText = document.getElementById('statusText');
+    const dateNow = document.getElementById('dateNow');
+
+    // Show current date/time (localized)
+    const now = new Date();
+    dateNow.textContent = now.toLocaleString(undefined, {
+      weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+    });
+
+    // If redirectUrl is present, enable button and optionally auto redirect
+    if (redirectUrl && redirectUrl.trim().length > 0) {
+      goBtn.removeAttribute('disabled');
+      goBtn.title = 'Open result page';
+      goBtn.addEventListener('click', () => {
+        window.location.href = redirectUrl;
+      });
+
+      autoStatus.textContent = 'enabled';
+      statusText.textContent = 'Published — Redirecting...';
+
+      // small delay so user sees message, then redirect
+      setTimeout(() => {
+        window.location.href = redirectUrl;
+      }, autoRedirectDelay);
+
+    } else {
+      // Redirect is disabled / URL is null
+      autoStatus.textContent = 'disabled';
+      statusText.textContent = 'Pending — Results not published yet';
+    }
+
+    // Refresh button simply reloads the page
+    refreshBtn.addEventListener('click', () => location.reload());
+
+    // Accessibility: allow Enter on goBtn when enabled
+    goBtn.addEventListener('keydown', (e) => {
+      if (!goBtn.disabled && (e.key === 'Enter' || e.key === ' ')) {
+        e.preventDefault();
+        window.location.href = redirectUrl;
+      }
+    });
+  </script>
+</body>
 </html>
